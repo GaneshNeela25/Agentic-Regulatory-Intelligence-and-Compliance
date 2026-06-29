@@ -1,10 +1,18 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from services.pdf_reader import extract_text
 from fastapi import UploadFile
 from services.compare import compare
 from services.change_detector import detect_changes
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/read")
 
@@ -58,4 +66,3 @@ def show_changes():
         "total_changes": len(changes),
         "changes": changes
     }
-
